@@ -1,0 +1,173 @@
+:root {
+  --bs-blue: #0d6efd;
+  --bs-indigo: #6610f2;
+  --bs-purple: #6f42c1;
+  --bs-pink: #d63384;
+  --bs-red: #dc3545;
+  --bs-orange: #fd7e14;
+  --bs-yellow: #ffc107;
+  --bs-green: #198754;
+  --bs-teal: #20c997;
+  --bs-cyan: #0dcaf0;
+  --bs-black: #000;
+  --bs-white: #fff;
+  --bs-gray: #6c757d;
+  --bs-gray-dark: #343a40;
+  --bs-gray-100: #f8f9fa;
+  --bs-gray-200: #e9ecef;
+  --bs-gray-300: #dee2e6;
+  --bs-gray-400: #ced4da;
+  --bs-gray-500: #adb5bd;
+  --bs-gray-600: #6c757d;
+  --bs-gray-700: #495057;
+  --bs-gray-800: #343a40;
+  --bs-gray-900: #212529;
+  --bs-primary: #0d6efd;
+  --bs-secondary: #6c757d;
+  --bs-success: #198754;
+  --bs-info: #0dcaf0;
+  --bs-alert-bg: #b6effb;
+  --bs-warning: #ffc107;
+  --bs-danger: #dc3545;
+  --bs-light: #f8f9fa;
+  --bs-dark: #212529;
+  --bs-primary-rgb: 13, 110, 253;
+  --bs-secondary-rgb: 108, 117, 125;
+  --bs-success-rgb: 25, 135, 84;
+  --bs-info-rgb: 13, 202, 240;
+  --bs-warning-rgb: 255, 193, 7;
+  --bs-danger-rgb: 220, 53, 69;
+  --bs-light-rgb: 248, 249, 250;
+  --bs-dark-rgb: 33, 37, 41;
+  --bs-white-rgb: 255, 255, 255;
+  --bs-black-rgb: 0, 0, 0;
+  --bs-body-color-rgb: 33, 37, 41;
+  --bs-body-bg-rgb: 255, 255, 255;
+  --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+  --bs-body-font-family: var(--bs-font-sans-serif);
+  --bs-body-font-size: 1rem;
+  --bs-body-font-weight: 400;
+}
+
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+body {
+  background-color: #FFF8DC;
+}
+
+.card {
+  margin: 5em 10em 5em ;
+}
+
+.card .card-header {
+  height: 12em;
+  background-color: #FFEBCD
+}
+
+.card-header img {
+  width: 5em;
+  height: 3.5em;
+  border-radius: 0.5em;
+  opacity: 0.8;
+}
+
+h1 {
+  align-items: center;
+  color: MidnightBlue;
+  font-weight: bold;
+}
+
+h3 {
+  color: DarkSlateGray;
+}
+
+.card .card-body th {
+  background-color:  #61dafb;
+  color: white;
+  border: 1px solid #ddd;
+}
+
+table th,
+table td {
+  padding: .425em;
+  text-align: left;
+  color: #9da9b9;
+  border: 1px solid #ddd;
+}
+
+.allocate-input .number {
+  height: 100;
+  padding: 6px;
+}
+
+.currency {
+  position: 8px 12px;
+  background-color: #cff4fc;
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+.currency:focus,
+.currency:hover {
+  outline: none;
+  border:none;
+}
+
+
+.swal2-popup {
+  font-size: 0.6rem !important;
+}
+
+.swal2-styled {
+  padding: 10px 32px 10px 32px !important;
+  width: 60px;
+  height: 40px;
+}
+
+.btn:hover {
+  background-color: #014b70;
+  color: white;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
