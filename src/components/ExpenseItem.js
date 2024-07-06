@@ -10,9 +10,51 @@ const ExpenseItem = (props) => {
   const { currency, dispatch } = useContext(AppContext);
 
   const handleDeleteExpense = () => {
-    dispatch({
-      type: "DELETE_EXPENSE",
-      payload: props.id,
+
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: "btn btn-success",
+        cancelButton: "btn btn-danger"
+      },
+      buttonsStyling: false
+    });
+    swalWithBootstrapButtons.fire({
+      position: "top",
+      title: "Are you sure?",
+      text: "You won't be able to recover allocation!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "No, cancel!",
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        swalWithBootstrapButtons.fire({
+          position: "top",
+          title: "Allocation Recovered!",
+          text: "Check remaining funds.",
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+
+        dispatch({
+          type: "DELETE_EXPENSE",
+          payload: props.id,
+        });
+      } else if (
+        /* Read more about handling dismissals below */
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        swalWithBootstrapButtons.fire({
+          position: "top",
+          title: "Cancelled",
+          text: "Allocation unchanged.",
+          icon: "error",
+          showConfirmButton: false,
+        timer: 1500,
+        });
+      }
     });
   };
 

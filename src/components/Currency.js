@@ -31,13 +31,15 @@ const Currency = () => {
         value={currency}
         onChange={(event) => changeCurrency(event.target.value)}
       >
-        <option className="money" value="$">$ Dollar</option>
-        <option className="money" value="£">£ Pound</option>
-        <option className="money" value="€">€ Euro</option>
-        <option className="money"  value="₹">₹ Rupee</option>
-        <option className="money" value="CA">$ Cad</option>
-        <option className="money" value="¥">¥ Yuan</option>
-        <option className="money" value="₦">₦ Naira</option>
+        <option className="money" value="$">$ USD</option>
+        <option className="money" value="£">£ POUND</option>
+        <option className="money" value="€">€ EURO</option>
+        <option className="money" value="C$">C$ CAD</option>
+        <option className="money" value="JD">JD JOD</option>
+        <option className="money" value="₹">₹ RUPEE</option>
+        <option className="money" value="¥">¥ JPY</option>
+        <option className="money" value="A$">A$ AUD</option>
+        <option className="money" value="₦">₦ NGN</option>
         <option className="money" value="EC">$ EC</option>
       </select>
     </div>

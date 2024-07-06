@@ -91,13 +91,13 @@ body {
 }
 
 .card .card-header {
-  height: 12em;
+  height: 10em;
   background-color: #FFEBCD
 }
 
 .card-header img {
   width: 5em;
-  height: 3.5em;
+  height: 3em;
   border-radius: 0.5em;
   opacity: 0.8;
 }
@@ -112,6 +112,10 @@ h3 {
   color: DarkSlateGray;
 }
 
+.card .card-body {
+  padding: 2em;
+}
+
 .card .card-body th {
   background-color:  #61dafb;
   color: white;
@@ -122,16 +126,26 @@ table th,
 table td {
   padding: .425em;
   text-align: left;
-  color: #9da9b9;
+  font-size: small;
+ 
   border: 1px solid #ddd;
+}
+
+tr:hover td { 
+  background: transparent; 
+  font-weight: bold;
+  background-color:  #61dafb;
 }
 
 .allocate-input .number {
   height: 100;
   padding: 6px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
 }
 
 .currency {
+  color: red;
   position: 8px 12px;
   background-color: #cff4fc;
   cursor: pointer;
@@ -139,8 +153,9 @@ table td {
   outline: none;
 }
 
-.currency:focus,
-.currency:hover {
+.currency.money:focus,
+.currency.money:hover {
+  background-color: #cff4fc;
   outline: none;
   border:none;
 }
@@ -157,7 +172,7 @@ table td {
 }
 
 .btn:hover {
-  background-color: #014b70;
+  background: linear-gradient(109.6deg, rgb(104, 183, 249) 31.3%, rgb(176, 248, 200) 100.2%);
   color: white;
 }
 

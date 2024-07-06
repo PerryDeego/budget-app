@@ -7,6 +7,7 @@ const Budget = () => {
   // and store the values to budget locally
   const { budget, dispatch, currency, expenses } = useContext(AppContext);
   const [newBudget, setNewBudget] = useState(budget);
+  const maxBudget = 1000000;
 
   // When this event is triggered a new value is set for budget
   const handleBudgetChange = (event) => {
@@ -16,30 +17,30 @@ const Budget = () => {
       return (total += item.cost);
     }, 0);
 
-    if (newBudget > 200000) {
+    if (event.target.value > maxBudget) {
       Swal.fire({
         position: "top",
-        title: `Budget entered ${currency}` + budget,
+        title: `Exceed Maximum Budget ${currency}` + maxBudget,
         text: `Budget entered ${currency}` + event.target.value,
         icon: "error",
       });
 
       return;
-    }
-
-    if (newBudget < totalExpenses) {
+    } else if (event.target.value < totalExpenses) {
       Swal.fire({
         position: "top",
-        title: `Budget: ${currency}` + event.target.value,
+        title: `Budget: ${currency}` + newBudget,
         text: `Less than amount spent ${currency}` + totalExpenses,
         icon: "warning",
       });
+
       return;
-    } 
+    } else{
       dispatch({
         type: "SET_BUDGET",
         payload: newBudget,
       });
+    }
   
   };
 
@@ -48,8 +49,8 @@ const Budget = () => {
       <span>Budget: {currency}</span>
       <input
         type="number"
-        step="10"
-        value={newBudget}
+        step="10000"
+        value={budget}
         onChange={handleBudgetChange}
       ></input>
     </div>

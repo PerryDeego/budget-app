@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import CurrencyInput from "react-currency-input-field";
+import Select from "react-select";
 import { AppContext } from "../context/AppContext";
 import { FaSave } from "react-icons/fa";
 import Swal from "sweetalert2";
@@ -8,43 +9,68 @@ import "../App.css";
 const AllocationForm = (props) => {
   // useContext returns the context value for the context you passed
   // and store the values to expenses locally
-  const { currency, dispatch, remaining } = useContext(AppContext);
+  const { currency, dispatch, expenses, deptOption, remaining } = useContext(AppContext);
 
-  const [name, setName] = useState("");
-  const [cost, setCost] = useState("");
-  const [action, setAction] = useState("");
+  const [name, setName] = useState(null);
+  const [cost, setCost] = useState(0);
+  const [action, setAction] = useState(null);
 
-  const submitEvent = (event) => {
+  const actions = [
+    { value: "Add", label: "Add" },
+    { value: "Reduce", label: "Reduce" },
+  ];
+
+  const handleReset = () => {
+    setName("departmentSelect", { value: "", label: "" });
+    setAction("actionSelect", { value: "", label: "" });
+    setCost(0);
+  };
+
+  const submitEvent = () => {
     // validate if allocation cost is for than remaining; if so set clear cost value
-    if (cost < 1 || !name.trim()) {
+    if (cost < 1 || !name || !action) {
       Swal.fire({
         position: "top",
-        title: `Allocation and Department`,
-        text: `Can not be $0 or empty`,
+        title: `Department or Allocation`,
+        text: `Can not be empty or $0`,
         icon: "error",
       });
 
-      setCost("");
       return;
-    } else if (cost > remaining && !name.trim()) {
+    } else if (cost > remaining && name) {
       Swal.fire({
         position: "top",
         title: `Allocation ${currency}` + cost,
         text:
-          `The value cannot exceed remaining budget ${currency}` + remaining,
+          `The value can not exceed remaining budget ${currency}` + remaining,
         icon: "error",
       });
 
-      setCost("");
       return;
     }
 
     const expense = {
-      name: name,
+      name: name.value,
       cost: parseInt(cost),
     };
 
-    if (action === "Reduce") {
+    if (action.value === "Reduce" && name && cost) {
+      // Filtering based on multiple properties
+      const filteredCost = expenses.find((element) => element.name > name.value);
+
+      if (parseInt(filteredCost.cost) < parseInt(cost)) {
+        Swal.fire({
+          position: "top",
+          title: `Allocation Reduction ${currency}` + cost,
+          text:
+            `Can not exceed allocated budget ${currency}` + filteredCost.cost,
+          icon: "error",
+        });
+  
+        console(filteredCost.cost);
+        return;
+      } 
+
       dispatch({
         type: "RED_EXPENSE",
         payload: expense,
@@ -58,12 +84,12 @@ const AllocationForm = (props) => {
         showConfirmButton: false,
         timer: 1500,
       });
-    } else {
+
+    } else if (action.value === "Add" && name && cost)  {
       dispatch({
         type: "ADD_EXPENSE",
         payload: expense,
       });
-
       Swal.fire({
         position: "top",
         title: `Allocation ${currency}` + cost,
@@ -72,10 +98,17 @@ const AllocationForm = (props) => {
         showConfirmButton: false,
         timer: 1500,
       });
+    } else {
+      Swal.fire({
+        position: "top",
+        title: `Oops...`,
+        text: "Please check inputs",
+        icon: "question",
+        showConfirmButton: false,
+        timer: 1500,
+      });
     }
 
-    setName("");
-    setCost("");
   };
 
   return (
@@ -83,81 +116,52 @@ const AllocationForm = (props) => {
       <div className="row">
         <div className="input-group mb-3" style={{ marginLeft: "2rem" }}>
           <div className="input-group-prepend">
-            <label className="input-group-text" htmlFor="inputGroupSelect01">
+            <label className="input-group-text" htmlFor="departmentSelect">
               Department
             </label>
           </div>
-          <select
+          {" "}
+          {/* Dropdown item to select department */}
+          <Select
+            isClearable
             className="custom-select"
-            id="inputGroupSelect01"
-            name="inputGroupSelect01"
-            onChange={(event) => setName(event.target.value)}
-          >
-            <option defaultValue>Choose...</option>
-            <option value="Marketing" name="marketing">
-              {" "}
-              Marketing
-            </option>
-            <option value="Sales" name="sales">
-              Sales
-            </option>
-            <option value="Finance" name="finance">
-              Finance
-            </option>
-            <option value="HR" name="hr">
-              HR
-            </option>
-            <option value="IT" name="it">
-              IT
-            </option>
-            <option value="Admin" name="admin">
-              Admin
-            </option>
-          </select>
-
+            id="departmentSelect"
+            name="departmentSelect"
+            styles={{ width: "2rem" }}
+            value={name}
+            options={deptOption}
+            onChange={(department) => setName(department)}
+          />
           <div className="input-group-prepend" style={{ marginLeft: "2rem" }}>
-            <label className="input-group-text" htmlFor="inputGroupSelect02">
-              Allocation
+            <label className="input-group-text" htmlFor="actionSelect">
+              Allocation-Type
             </label>
           </div>
-          <select
+           {/* Dropdown item to choose allocation action type */}
+          <Select
+            isClearable
             className="custom-select"
-            id="inputGroupSelect02"
-            onChange={(event) => setAction(event.target.value)}
-          >
-            <option defaultValue value="Add" name="Add">
-              Add
-            </option>
-            <option value="Reduce" name="Reduce">
-              Reduce
-            </option>
-          </select>
+            id="actionSelect"
+            name="actionSelect"
+            styles={{ width: "2rem" }}
+            value={action}
+            options={actions}
+            onChange={(newAction) => setAction(newAction)}
+          />
           <div className="allocate-input">
             <span style={{ marginLeft: "2rem" }}>{currency}</span>
+             {/* Currency input box for entering allocation cost */}
             <CurrencyInput
-              label="Amount"
               className="number"
               id="cost"
               name="cost"
-              step="1000"
+              step={1000}
               defaultValue={0}
+              value={cost}
               allowDecimals={true}
               decimalsLimit={2}
-              onValueChange={(value) => setCost(value)}
+              onValueChange={(newCost) => setCost(newCost)}
             />
-            {/*
-            <input
-              className="number"
-              required="required"
-              type="number"
-              id="cost"
-              name="cost"
-              step="1000"
-              placeholder="Make allocation..."
-              value={cost}
-              onChange={(event) => setCost(event.target.value)}
-            ></input>
-            */}
           </div>
           <button
             className="btn btn-primary"
@@ -165,6 +169,9 @@ const AllocationForm = (props) => {
             style={{ marginLeft: "2rem" }}
           >
             Save <FaSave />
+          </button>
+          <button type="button" className="btn btn-warning" onClick={handleReset}>
+            Reset
           </button>
         </div>
       </div>

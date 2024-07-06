@@ -24,7 +24,7 @@ const App = () => {
         <h1 className="mt-3"><img
           src={money}
           alt="money"
-        /> Company's Budget Allocation  </h1>
+        /> Monthly Budget Allocation  </h1>
         </div>
         <div className="card-body">
         <div className="row mt-3">
