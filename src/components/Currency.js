@@ -1,6 +1,8 @@
 import React, { useContext } from "react";
 import { AppContext } from "../context/AppContext";
 import Swal from "sweetalert2";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; 
 import "../App.css";
 
 const Currency = () => {
@@ -12,14 +14,17 @@ const Currency = () => {
       payload: val,
     });
 
-    Swal.fire({
-      position: "top",
-      icon: "success",
-      title: `${currency} Replaced`,
-      text: "Currency change successfully",
+    toast.success(`Currency change from [ ${currency} ]`, {
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
       showConfirmButton: false,
-      timer: 1500
-    });
+      });
   };
 
   return (

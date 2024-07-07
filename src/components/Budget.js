@@ -49,7 +49,7 @@ const Budget = () => {
       <span>Budget: {currency}</span>
       <input
         type="number"
-        step="10000"
+        step="100000"
         value={budget}
         onChange={handleBudgetChange}
       ></input>

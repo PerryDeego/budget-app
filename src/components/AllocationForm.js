@@ -6,6 +6,9 @@ import { FaSave } from "react-icons/fa";
 import Swal from "sweetalert2";
 import "../App.css";
 
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; 
+
 const AllocationForm = (props) => {
   // useContext returns the context value for the context you passed
   // and store the values to expenses locally
@@ -28,11 +31,20 @@ const AllocationForm = (props) => {
 
   const submitEvent = () => {
     // validate if allocation cost is for than remaining; if so set clear cost value
-    if (cost < 1 || !name || !action) {
+    if (cost < 1 || !name) {
       Swal.fire({
         position: "top",
         title: `Department or Allocation`,
         text: `Can not be empty or $0`,
+        icon: "error",
+      });
+
+      return;
+    }else if (!action) {
+      Swal.fire({
+        position: "top",
+        title: `Allocation Type Required`,
+        text:`Please select type`,
         icon: "error",
       });
 
@@ -56,18 +68,18 @@ const AllocationForm = (props) => {
 
     if (action.value === "Reduce" && name && cost) {
       // Filtering based on multiple properties
-      const filteredCost = expenses.find((element) => element.name > name.value);
+      const filteredCost = expenses.find((obj) => obj.name === name.value);
 
       if (parseInt(filteredCost.cost) < parseInt(cost)) {
         Swal.fire({
           position: "top",
-          title: `Allocation Reduction ${currency}` + cost,
+          title: `Allocation Reduce ${currency}` + cost,
           text:
-            `Can not exceed allocated budget ${currency}` + filteredCost.cost,
+            `Can not exceed ${filteredCost.name} budget of ${currency}` + filteredCost.cost,
           icon: "error",
         });
   
-        console(filteredCost.cost);
+        console.log(filteredCost.cost);
         return;
       } 
 
@@ -76,28 +88,36 @@ const AllocationForm = (props) => {
         payload: expense,
       });
 
-      Swal.fire({
-        position: "top",
-        title: `Allocation ${currency}` + cost,
-        text: "decrease successfully",
-        icon: "success",
+      toast.success(`Allocation Decrease ${currency}` + cost, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
         showConfirmButton: false,
-        timer: 1500,
-      });
+        });
 
     } else if (action.value === "Add" && name && cost)  {
       dispatch({
         type: "ADD_EXPENSE",
         payload: expense,
       });
-      Swal.fire({
-        position: "top",
-        title: `Allocation ${currency}` + cost,
-        text: "Increase successfully",
-        icon: "success",
+
+      toast.success(`Allocation Increase ${currency}` + cost, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
         showConfirmButton: false,
-        timer: 1500,
-      });
+        });
+
     } else {
       Swal.fire({
         position: "top",
@@ -114,9 +134,9 @@ const AllocationForm = (props) => {
   return (
     <div className="budge-panel">
       <div className="row">
-        <div className="input-group mb-3" style={{ marginLeft: "2rem" }}>
+        <div className="input-group mb-3">
           <div className="input-group-prepend">
-            <label className="input-group-text" htmlFor="departmentSelect">
+            <label className="input-group-text" htmlFor="departmentSelect" style={{ color: "blue" }}>
               Department
             </label>
           </div>
@@ -127,13 +147,12 @@ const AllocationForm = (props) => {
             className="custom-select"
             id="departmentSelect"
             name="departmentSelect"
-            styles={{ width: "2rem" }}
             value={name}
             options={deptOption}
             onChange={(department) => setName(department)}
           />
-          <div className="input-group-prepend" style={{ marginLeft: "2rem" }}>
-            <label className="input-group-text" htmlFor="actionSelect">
+          <div className="input-group-prepend">
+            <label className="input-group-text" htmlFor="actionSelect" style={{ color: "blue" }}>
               Allocation-Type
             </label>
           </div>
@@ -143,7 +162,6 @@ const AllocationForm = (props) => {
             className="custom-select"
             id="actionSelect"
             name="actionSelect"
-            styles={{ width: "2rem" }}
             value={action}
             options={actions}
             onChange={(newAction) => setAction(newAction)}

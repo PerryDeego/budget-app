@@ -1,24 +1,31 @@
-import React from "react";
-
+import React, { useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-
 import AllocationForm from "./components/AllocationForm";
 import Budget from "./components/Budget";
 import ExpenseList from "./components/ExpenseList";
 import ExpenseTotal from "./components/ExpenseTotal";
 import RemainingBudget from "./components/Remaining";
 import Currency from "./components/Currency";
+import { ToastContainer } from 'react-toastify';
+import { AppProvider } from "./context/AppContext";
 import money from "./assets/money.png"
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 import "./App.css";
 
-// Add code to import the other components here under
-
-import { AppProvider } from "./context/AppContext";
-
 const App = () => {
+
+  useEffect(() => {
+    AOS.init({
+      duration: 1000
+    });
+    AOS.refresh();
+  }, []);
+
   return (
     <AppProvider>
     <div className="container-fluid">
+    <ToastContainer />
       <div className="card">
       <div className="card-header">
         <h1 className="mt-3"><img
