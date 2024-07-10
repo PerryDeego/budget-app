@@ -12,7 +12,7 @@ const ExpenseTotal = () => {
 
   return (
     <div className="alert alert-danger">
-      <span>Spent so far: {currency}{totalExpenses}</span>
+      <span>Spent so far: {currency}{totalExpenses.toLocaleString('en-US')}</span>
     </div>
   );
 };

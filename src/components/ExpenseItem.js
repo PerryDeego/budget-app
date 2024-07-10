@@ -4,22 +4,71 @@ import { TiDelete } from "react-icons/ti";
 import { AppContext } from "../context/AppContext";
 import Swal from "sweetalert2";
 
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const ExpenseItem = (props) => {
   // useContext returns the context value for the context you passed
   // and store the values to dispatch locally
   const { currency, dispatch } = useContext(AppContext);
 
   const handleDeleteExpense = () => {
-    dispatch({
-      type: "DELETE_EXPENSE",
-      payload: props.id,
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: "btn btn-success",
+        cancelButton: "btn btn-danger",
+      },
+      buttonsStyling: false,
     });
+    swalWithBootstrapButtons
+      .fire({
+        position: "top",
+        title: "Are you sure?",
+        text: "You won't be able to recover allocation!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          toast.success(`Allocation Remove`, {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            showConfirmButton: false,
+          });
+
+          dispatch({
+            type: "DELETE_EXPENSE",
+            payload: props.id,
+          });
+        } else if (
+          /* Read more about handling dismissals below */
+          result.dismiss === Swal.DismissReason.cancel
+        ) {
+          swalWithBootstrapButtons.fire({
+            position: "top",
+            title: "Cancelled",
+            text: "Allocation unchanged.",
+            icon: "error",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      });
   };
 
   const increaseAllocation = (name) => {
     const expense = {
       name: name,
-      cost: 10,
+      cost: 10000,
     };
 
     dispatch({
@@ -27,21 +76,23 @@ const ExpenseItem = (props) => {
       payload: expense,
     });
 
-    Swal.fire({
-      position: "top",
-      icon: "success",
-      title: "+10",
-      text: "Expense increase by 10 successfully.",
+    toast.success(`Expense increase by +10`, {
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
       showConfirmButton: false,
-      timer: 1500
     });
-
   };
 
   const decreaseAllocation = (name) => {
     const expense = {
       name: name,
-      cost: 10,
+      cost: 10000,
     };
 
     dispatch({
@@ -49,13 +100,16 @@ const ExpenseItem = (props) => {
       payload: expense,
     });
 
-    Swal.fire({
-      position: "top",
-      icon: "warning",
-      title: "-10",
-      text: "Expense decrease by 10 successfully.",
+    toast.warning(`Expense decrease by -10`, {
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
       showConfirmButton: false,
-      timer: 1500
     });
 
     // alert("Expense reduce by [10] successfully.");
@@ -63,7 +117,7 @@ const ExpenseItem = (props) => {
 
   return (
     <tr>
-     <td>{props.row}</td>
+      <td>{props.row}</td>
       <td>{props.name}</td>
       <td>
         {currency}
@@ -84,7 +138,11 @@ const ExpenseItem = (props) => {
         ></FaMinusCircle>
       </td>
       <td>
-        <TiDelete color="orange" size="1.5em" onClick={handleDeleteExpense}></TiDelete>
+        <TiDelete
+          color="orange"
+          size="1.5em"
+          onClick={handleDeleteExpense}
+        ></TiDelete>
       </td>
     </tr>
   );
