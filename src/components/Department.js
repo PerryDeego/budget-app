@@ -15,7 +15,7 @@ const Department = () => {
       </Button>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>ADD NEW DEPARTMENT</Modal.Title>
+          <Modal.Title className="title">ADD NEW DEPARTMENT</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <AddForm />
