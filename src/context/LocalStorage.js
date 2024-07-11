@@ -1,20 +1,17 @@
 
-export const loadInitialState = (initialState) => {
+export const loadInitialState = (key, defaultValue = {}) => {
     try {
-      const serialState = localStorage.getItem('state') || initialState
-      if (serialState === null) {
-        return undefined;
-      }
-      return JSON.parse(serialState);
+      return localStorage.getItem(key)
+      ? JSON.parse(localStorage.getItem(key))
+      : defaultValue;
     } catch (err) {
       return undefined;
     }
 };
 
-export const saveState = (state) => {
+export const saveState = (key, value) => {
     try {
-      const serialState = JSON.stringify(state);
-      localStorage.setItem('state', serialState);
+      localStorage.setItem(key, JSON.stringify(value));
     } catch(err) {
         console.log(err);
     }
