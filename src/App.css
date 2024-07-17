@@ -122,6 +122,11 @@ h3 {
   border: 1px solid #ddd;
 }
 
+.main-budget {
+   width: 60%;
+    color: #008000;
+}
+
 table th,
 table td {
   padding: .425em;
@@ -171,6 +176,19 @@ tr:hover td {
   height: 40px;
 }
 
+.select-option {
+  min-width: 13rem;
+  height: auto;
+  font-size: small;
+  border-radius: 0 0 0.25rem 0.25rem;
+  transition: all 0.3s ease-in-out;
+
+     &:hover {
+        outline: none;
+        color: #3E8DA8;
+     }
+  }
+
 .btn:hover {
   background: linear-gradient(109.6deg, rgb(104, 183, 249) 31.3%, rgb(176, 248, 200) 100.2%);
   color: white;
@@ -184,5 +202,8 @@ tr:hover td {
     transform: rotate(360deg);
   }
 }
+
+
+
 
 
