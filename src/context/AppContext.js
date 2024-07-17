@@ -86,12 +86,18 @@ export const AppReducer = (state, action) => {
       return {
         ...state,
       };
+    case "DELETE_DEPARTMENT":
+      return {
+        ...state,
+          expenses: state.expenses.filter((expense) => expense.id !== action.payload),
+      };
     default:
       return state;
   }
 };
 
 // 1. Department names declaration for the dropdown option
+/*
 const deptOption = [
   { value: "Marketing", label: "Marketing" },
   { value: "Finance", label: "Finance" },
@@ -103,6 +109,7 @@ const deptOption = [
   { value: "Engineering", label: "ENG" },
   { value: "Production", label: "PRO" },
 ];
+*/
 
 // 2. Sets the initial state when the app loads
 const defaultState = {
@@ -159,8 +166,8 @@ const defaultState = {
       cost: 81000,
     },
   ],
-  deptOption,
-  currency: "£",
+ // deptOption,
+  currency: "$",
 };
 
 // Load initialState from LocalStorage
@@ -192,7 +199,7 @@ export const AppProvider = (props) => {
         expenses: state.expenses,
         budget: state.budget,
         remaining: remaining,
-        deptOption: state.deptOption,
+        // deptOption: state.deptOption,
         currency: state.currency,
         dispatch,
       }}
