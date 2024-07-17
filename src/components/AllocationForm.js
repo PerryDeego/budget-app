@@ -12,7 +12,10 @@ import 'react-toastify/dist/ReactToastify.css';
 const AllocationForm = (props) => {
   // useContext returns the context value for the context you passed
   // and store the values to expenses locally
-  const { currency, dispatch, expenses, deptOption, remaining } = useContext(AppContext);
+  const { currency, dispatch, expenses, remaining } = useContext(AppContext);
+
+  // Retrieve departments for dropdown selection
+  const option = expenses.map((obj) => ({"value":obj.name, "label": obj.id }));
 
   const [name, setName] = useState(null);
   const [cost, setCost] = useState(0);
@@ -52,7 +55,7 @@ const AllocationForm = (props) => {
     } else if (cost > remaining && name) {
       Swal.fire({
         position: "top",
-        title: `Allocation ${currency}` + cost,
+        title: `Invalid Allocation ${currency}` + cost,
         text:
           `The value can not exceed remaining budget ${currency}` + remaining,
         icon: "error",
@@ -136,7 +139,7 @@ const AllocationForm = (props) => {
       <div className="row">
         <div className="input-group mb-3">
           <div className="input-group-prepend">
-            <label className="input-group-text" htmlFor="departmentSelect" style={{ color: "blue" }}>
+            <label className="input-group-text" htmlFor="departmentSelect" style={{ color: "#3E8DA8" }}>
               Department
             </label>
           </div>
@@ -144,22 +147,22 @@ const AllocationForm = (props) => {
           {/* Dropdown item to select department */}
           <Select
             isClearable
-            className="custom-select"
+            className="select-option"
             id="departmentSelect"
             name="departmentSelect"
             value={name}
-            options={deptOption}
+            options={option}
             onChange={(department) => setName(department)}
           />
           <div className="input-group-prepend">
-            <label className="input-group-text" htmlFor="actionSelect" style={{ color: "blue" }}>
+            <label className="input-group-text" htmlFor="actionSelect" style={{ color: "#3E8DA8" }}>
               Allocation-Type
             </label>
           </div>
            {/* Dropdown item to choose allocation action type */}
           <Select
             isClearable
-            className="custom-select"
+            className="select-option"
             id="actionSelect"
             name="actionSelect"
             value={action}
