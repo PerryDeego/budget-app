@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { FaMinusCircle, FaPlusCircle } from "react-icons/fa";
-import { TiDelete } from "react-icons/ti";
+import { RiDeleteBin6Fill } from "react-icons/ri";
+import { RiChatDeleteFill } from "react-icons/ri";
 import { AppContext } from "../context/AppContext";
 import Swal from "sweetalert2";
 
@@ -27,7 +28,7 @@ const ExpenseItem = (props) => {
         text: "You won't be able to recover allocation!",
         icon: "warning",
         showCancelButton: true,
-        confirmButtonText: "Yes, delete it!",
+        confirmButtonText: "Yes, clear it!",
         cancelButtonText: "No, cancel!",
         reverseButtons: true,
       })
@@ -68,7 +69,7 @@ const ExpenseItem = (props) => {
   const increaseAllocation = (name) => {
     const expense = {
       name: name,
-      cost: 10000,
+      cost: 1000,
     };
 
     dispatch({
@@ -76,7 +77,7 @@ const ExpenseItem = (props) => {
       payload: expense,
     });
 
-    toast.success(`Expense increase by +10`, {
+    toast.success(`Expense increase by +${currency}1,000`, {
       position: "top-center",
       autoClose: 2000,
       hideProgressBar: false,
@@ -92,7 +93,7 @@ const ExpenseItem = (props) => {
   const decreaseAllocation = (name) => {
     const expense = {
       name: name,
-      cost: 10000,
+      cost: 1000,
     };
 
     dispatch({
@@ -100,7 +101,7 @@ const ExpenseItem = (props) => {
       payload: expense,
     });
 
-    toast.warning(`Expense decrease by -10`, {
+    toast.warning(`Expense decrease by -${currency}1,000`, {
       position: "top-center",
       autoClose: 2000,
       hideProgressBar: false,
@@ -114,6 +115,61 @@ const ExpenseItem = (props) => {
 
     // alert("Expense reduce by [10] successfully.");
   };
+
+  const handelDeleteDepartment = () => {
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: "btn btn-success",
+        cancelButton: "btn btn-danger",
+      },
+      buttonsStyling: false,
+    });
+    swalWithBootstrapButtons
+      .fire({
+        position: "top",
+        title: "Are you sure?",
+        text: "Department won't be recover!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, Delete it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          toast.success(`Department Deleted`, {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            showConfirmButton: false,
+          });
+
+          dispatch({
+            type: "DELETE_DEPARTMENT",
+            payload: props.id,
+          });
+      
+        } else if (
+          /* Read more about handling dismissals below */
+          result.dismiss === Swal.DismissReason.cancel
+        ) {
+          swalWithBootstrapButtons.fire({
+            position: "top",
+            title: "Cancelled",
+            text: "Department remains.",
+            icon: "error",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      });
+  };
+
 
   return (
     <tr>
@@ -138,11 +194,18 @@ const ExpenseItem = (props) => {
         ></FaMinusCircle>
       </td>
       <td>
-        <TiDelete
+        <RiChatDeleteFill 
           color="orange"
           size="1.5em"
           onClick={handleDeleteExpense}
-        ></TiDelete>
+        ></RiChatDeleteFill>
+      </td>
+      <td>
+        <RiDeleteBin6Fill
+          size="1.5em"
+           color="red"
+          onClick={handelDeleteDepartment}
+        ></RiDeleteBin6Fill>
       </td>
     </tr>
   );
